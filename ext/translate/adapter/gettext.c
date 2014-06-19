@@ -22,8 +22,10 @@
 #include "translate/adapterinterface.h"
 #include "translate/exception.h"
 
-#include <locale.h>
-#include <libintl.h>
+#ifndef PHP_WIN32
+  #include <locale.h>
+  #include <libintl.h>
+#endif
 
 #include "kernel/main.h"
 #include "kernel/memory.h"
