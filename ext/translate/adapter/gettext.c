@@ -48,29 +48,41 @@ static zend_object_handlers phalcon_translate_adapter_gettext_object_handlers;
 static zval* phalcon_translate_adapter_gettext_read_dimension(zval *object, zval *offset, int type TSRMLS_DC)
 {
 	zval *translation;
-	char *msgstr;
+	char *msgstr = "";
 
 	if (!is_phalcon_class(Z_OBJCE_P(object))) {
 		return zend_get_std_object_handlers()->read_dimension(object, offset, type TSRMLS_CC);
 	}
 
-	msgstr = gettext(Z_STRVAL_P(offset));
+	#ifdef PHP_WIN32
+		PHALCON_CALL_FUNCTION(&translation, "gettext", offset);
 
-	PHALCON_INIT_VAR(translation);
-	ZVAL_STRING(translation, msgstr, 1);
+		return translation;
+	#else
+		msgstr = gettext(Z_STRVAL_P(offset));
+
+		PHALCON_INIT_VAR(translation);
+		ZVAL_STRING(translation, msgstr, 1);
+	#endif
 
 	return translation;
 }
 
 static int phalcon_translate_adapter_gettext_has_dimension(zval *object, zval *offset, int check_empty TSRMLS_DC)
 {
-	char *msgstr;
+	zval *translation;
+	char *msgstr = "";
 
 	if (!is_phalcon_class(Z_OBJCE_P(object))) {
 		return zend_get_std_object_handlers()->has_dimension(object, offset, check_empty TSRMLS_CC);
 	}
 
-	msgstr = gettext(Z_STRVAL_P(offset));
+	#ifdef PHP_WIN32
+		PHALCON_CALL_FUNCTION(&translation, "gettext", offset);
+		msgstr = Z_STRVAL_P(translation);
+	#else
+		msgstr = gettext(Z_STRVAL_P(offset));
+	#endif
 
 	return (1 == check_empty) ? strlen(msgstr) : 1;
 }
@@ -126,8 +138,8 @@ PHP_METHOD(Phalcon_Translate_Adapter_Gettext, __construct){
 	PHALCON_MM_GROW();
 
 	phalcon_fetch_params(1, 1, 0, &options);
-	
-	if (Z_TYPE_P(options) != IS_ARRAY) { 
+
+	if (Z_TYPE_P(options) != IS_ARRAY) {
 		PHALCON_THROW_EXCEPTION_STRW(phalcon_translate_exception_ce, "Invalid options");
 		return;
 	}
@@ -157,22 +169,34 @@ PHP_METHOD(Phalcon_Translate_Adapter_Gettext, __construct){
 	PHALCON_CALL_FUNCTION(NULL, "putenv", setting);
 
 	setlocale(LC_ALL, Z_STRVAL_P(locale));
-	
+
 	if (Z_TYPE_P(directory) == IS_ARRAY) {
 		phalcon_is_iterable(directory, &ah0, &hp0, 0, 0);
 		while (zend_hash_get_current_data_ex(ah0, (void**) &hd, &hp0) == SUCCESS) {
 			PHALCON_GET_HKEY(key, ah0, hp0);
 			PHALCON_GET_HVALUE(value);
 
-			bindtextdomain(Z_STRVAL_P(key), Z_STRVAL_P(value));
+			#ifdef PHP_WIN32
+				PHALCON_CALL_FUNCTION(NULL, "bindtextdomain", key, value);
+			#else
+				bindtextdomain(Z_STRVAL_P(key), Z_STRVAL_P(value));
+			#endif
 
 			zend_hash_move_forward_ex(ah0, &hp0);
 		}
 	} else {
-		bindtextdomain(Z_STRVAL_P(default_domain), Z_STRVAL_P(directory));
+		#ifdef PHP_WIN32
+			PHALCON_CALL_FUNCTION(NULL, "bindtextdomain", default_domain, directory);
+		#else
+			bindtextdomain(Z_STRVAL_P(default_domain), Z_STRVAL_P(directory));
+		#endif
 	}
 
-	textdomain(Z_STRVAL_P(default_domain));
+	#ifdef PHP_WIN32
+		PHALCON_CALL_FUNCTION(NULL, "textdomain", default_domain);
+	#else
+		textdomain(Z_STRVAL_P(default_domain));
+	#endif
 
 	PHALCON_MM_RESTORE();
 }
@@ -192,20 +216,29 @@ PHP_METHOD(Phalcon_Translate_Adapter_Gettext, query){
 	HashTable *ah0;
 	HashPosition hp0;
 	zval **hd;
-	char *msgstr;
+	char *msgstr = "";
 
 	PHALCON_MM_GROW();
 
 	phalcon_fetch_params(1, 1, 2, &index, &placeholders, &domain);
-	
-	if (!domain) {
-		msgstr = gettext(Z_STRVAL_P(index));
-	} else {
-		msgstr = dgettext(Z_STRVAL_P(domain), Z_STRVAL_P(index));
-	}
 
-	PHALCON_INIT_VAR(translation);
-	ZVAL_STRING(translation, msgstr, 1);
+	#ifdef PHP_WIN32
+		if (!domain) {
+			PHALCON_CALL_FUNCTION(&translation, "gettext", index);
+		}
+		else {
+			PHALCON_CALL_FUNCTION(&translation, "dgettext", domain, index);
+		}
+	#else
+		if (!domain) {
+			msgstr = gettext(Z_STRVAL_P(index));
+		}
+		else {
+			msgstr = dgettext(Z_STRVAL_P(domain), Z_STRVAL_P(index));
+		}
+		PHALCON_INIT_VAR(translation);
+		ZVAL_STRING(translation, msgstr, 1);
+	#endif
 
 	if (placeholders && Z_TYPE_P(placeholders) == IS_ARRAY && zend_hash_num_elements(Z_ARRVAL_P(placeholders))) {
 		phalcon_is_iterable(placeholders, &ah0, &hp0, 0, 0);
@@ -236,16 +269,30 @@ PHP_METHOD(Phalcon_Translate_Adapter_Gettext, query){
  */
 PHP_METHOD(Phalcon_Translate_Adapter_Gettext, exists){
 
-	zval *index, *domain = NULL;
+	zval *translation, *index, *domain = NULL;
 	char *msgstr;
 
 	phalcon_fetch_params(0, 1, 1, &index, &domain);
 
-	if (!domain) {
-		msgstr = gettext(Z_STRVAL_P(index));
-	} else {
-		msgstr = dgettext(Z_STRVAL_P(domain), Z_STRVAL_P(index));
-	}
+	#ifdef PHP_WIN32
+		if (!domain) {
+			PHALCON_CALL_FUNCTION(&translation, "gettext", index);
+			msgstr = Z_STRVAL_P(translation);
+		}
+		else {
+			PHALCON_CALL_FUNCTION(&translation, "dgettext", domain, index);
+			msgstr = Z_STRVAL_P(translation);
+		}
+	#else
+		if (!domain) {
+			msgstr = gettext(Z_STRVAL_P(index));
+		}
+		else {
+			msgstr = dgettext(Z_STRVAL_P(domain), Z_STRVAL_P(index));
+		}
+		PHALCON_INIT_VAR(translation);
+		ZVAL_STRING(translation, msgstr, 1);
+	#endif
 
 	if (strlen(msgstr) > 0) {
 		RETURN_TRUE;
