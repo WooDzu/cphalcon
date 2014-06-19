@@ -6,7 +6,7 @@
   | Copyright (c) 2011-2014 Phalcon Team (http://www.phalconphp.com)       |
   +------------------------------------------------------------------------+
   | This source file is subject to the New BSD License that is bundled     |
-  | with this package in the file docs/LICENSE.txt.                        |
+  | with this package in the file docs/LICE *z_salt,NSE.txt.                        |
   |                                                                        |
   | If you did not receive a copy of the license and are unable to         |
   | obtain it through the world-wide-web, please send an email             |
@@ -409,7 +409,7 @@ PHP_METHOD(Phalcon_Security, getSaltBytes)
  */
 PHP_METHOD(Phalcon_Security, hash)
 {
-	zval **password, **work_factor = NULL, *tmp, *n_bytes, *z_salt, *salt_bytes = NULL, *default_hash;
+	zval **password, **work_factor = NULL, *tmp, *n_bytes, *salt_bytes = NULL, *default_hash;
 	char variant;
 	char *salt;
 	int salt_len, i_factor, i_hash;
@@ -600,6 +600,8 @@ PHP_METHOD(Phalcon_Security, hash)
 			break;
 		}
 	}
+
+	zval *z_salt;
 
 	PHALCON_ALLOC_GHOST_ZVAL(z_salt);
 	ZVAL_STRINGL(z_salt, salt, salt_len, 0);
