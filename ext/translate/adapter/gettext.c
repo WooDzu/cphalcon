@@ -56,16 +56,14 @@ static zval* phalcon_translate_adapter_gettext_read_dimension(zval *object, zval
 		return zend_get_std_object_handlers()->read_dimension(object, offset, type TSRMLS_CC);
 	}
 
-	#ifdef PHP_WIN32
+#ifdef PHP_WIN32
 		PHALCON_CALL_FUNCTION(&translation, "gettext", offset);
-
-		return translation;
-	#else
+#else
 		msgstr = gettext(Z_STRVAL_P(offset));
 
 		PHALCON_INIT_VAR(translation);
 		ZVAL_STRING(translation, msgstr, 1);
-	#endif
+#endif
 
 	return translation;
 }
@@ -79,12 +77,12 @@ static int phalcon_translate_adapter_gettext_has_dimension(zval *object, zval *o
 		return zend_get_std_object_handlers()->has_dimension(object, offset, check_empty TSRMLS_CC);
 	}
 
-	#ifdef PHP_WIN32
+#ifdef PHP_WIN32
 		PHALCON_CALL_FUNCTION(&translation, "gettext", offset);
 		msgstr = Z_STRVAL_P(translation);
-	#else
+#else
 		msgstr = gettext(Z_STRVAL_P(offset));
-	#endif
+#endif
 
 	return (1 == check_empty) ? strlen(msgstr) : 1;
 }
@@ -178,27 +176,27 @@ PHP_METHOD(Phalcon_Translate_Adapter_Gettext, __construct){
 			PHALCON_GET_HKEY(key, ah0, hp0);
 			PHALCON_GET_HVALUE(value);
 
-			#ifdef PHP_WIN32
+#ifdef PHP_WIN32
 				PHALCON_CALL_FUNCTION(NULL, "bindtextdomain", key, value);
-			#else
+#else
 				bindtextdomain(Z_STRVAL_P(key), Z_STRVAL_P(value));
-			#endif
+#endif
 
 			zend_hash_move_forward_ex(ah0, &hp0);
 		}
 	} else {
-		#ifdef PHP_WIN32
+#ifdef PHP_WIN32
 			PHALCON_CALL_FUNCTION(NULL, "bindtextdomain", default_domain, directory);
-		#else
+#else
 			bindtextdomain(Z_STRVAL_P(default_domain), Z_STRVAL_P(directory));
-		#endif
+#endif
 	}
 
-	#ifdef PHP_WIN32
+#ifdef PHP_WIN32
 		PHALCON_CALL_FUNCTION(NULL, "textdomain", default_domain);
-	#else
+#else
 		textdomain(Z_STRVAL_P(default_domain));
-	#endif
+#endif
 
 	PHALCON_MM_RESTORE();
 }
@@ -224,14 +222,14 @@ PHP_METHOD(Phalcon_Translate_Adapter_Gettext, query){
 
 	phalcon_fetch_params(1, 1, 2, &index, &placeholders, &domain);
 
-	#ifdef PHP_WIN32
+#ifdef PHP_WIN32
 		if (!domain) {
 			PHALCON_CALL_FUNCTION(&translation, "gettext", index);
 		}
 		else {
 			PHALCON_CALL_FUNCTION(&translation, "dgettext", domain, index);
 		}
-	#else
+#else
 		if (!domain) {
 			msgstr = gettext(Z_STRVAL_P(index));
 		}
@@ -240,7 +238,7 @@ PHP_METHOD(Phalcon_Translate_Adapter_Gettext, query){
 		}
 		PHALCON_INIT_VAR(translation);
 		ZVAL_STRING(translation, msgstr, 1);
-	#endif
+#endif
 
 	if (placeholders && Z_TYPE_P(placeholders) == IS_ARRAY && zend_hash_num_elements(Z_ARRVAL_P(placeholders))) {
 		phalcon_is_iterable(placeholders, &ah0, &hp0, 0, 0);
@@ -276,7 +274,7 @@ PHP_METHOD(Phalcon_Translate_Adapter_Gettext, exists){
 
 	phalcon_fetch_params(0, 1, 1, &index, &domain);
 
-	#ifdef PHP_WIN32
+#ifdef PHP_WIN32
 		if (!domain) {
 			PHALCON_CALL_FUNCTION(&translation, "gettext", index);
 			msgstr = Z_STRVAL_P(translation);
@@ -285,7 +283,7 @@ PHP_METHOD(Phalcon_Translate_Adapter_Gettext, exists){
 			PHALCON_CALL_FUNCTION(&translation, "dgettext", domain, index);
 			msgstr = Z_STRVAL_P(translation);
 		}
-	#else
+#else
 		if (!domain) {
 			msgstr = gettext(Z_STRVAL_P(index));
 		}
@@ -294,7 +292,7 @@ PHP_METHOD(Phalcon_Translate_Adapter_Gettext, exists){
 		}
 		PHALCON_INIT_VAR(translation);
 		ZVAL_STRING(translation, msgstr, 1);
-	#endif
+#endif
 
 	if (strlen(msgstr) > 0) {
 		RETURN_TRUE;
