@@ -31,22 +31,30 @@
 			<file>unit-tests/CacheTest.php</file>
 
 			<!-- Annotations -->
+            <!--
 			<file>unit-tests/AnnotationsTest.php</file>
 			<file>unit-tests/AnnotationsAdaptersTest.php</file>
+			-->
 
 			<!-- MVC Routing -->
+            <!--
 			<file>unit-tests/RouterMvcTest.php</file>
 			<file>unit-tests/RouterMvcAnnotationsTest.php</file>
+			-->
 
 			<!-- Database tests -->
+            <!--
 			<file>unit-tests/DbTest.php</file>
 			<file>unit-tests/DbDescribeTest.php</file>
 			<file>unit-tests/DbDialectTest.php</file>
 			<file>unit-tests/DbBindTest.php</file>
 			<file>unit-tests/DbProfilerTest.php</file>
+			-->
 			<!--<file>unit-tests/DbLoggerTest.php</file>-->
 
+
 			<!-- ORM tests / First Part -->
+            <!--
 			<file>unit-tests/ModelsMetadataTest.php</file>
 			<file>unit-tests/ModelsTest.php</file>
 			<file>unit-tests/ModelsCalculationsTest.php</file>
@@ -72,16 +80,21 @@
 			<file>unit-tests/ModelsDynamicOperationsTest.php</file>
 			<file>unit-tests/ModelsFindersTest.php</file>
 			<file>unit-tests/ModelsMassAssigmentTest.php</file>
+			-->
 
 
 			<!-- NoSQL tests -->
+            <!--
 			<file>unit-tests/CollectionsTest.php</file>
 			<file>unit-tests/CollectionsEventsTest.php</file>
 			<file>unit-tests/CollectionsSerializeTest.php</file>
+			-->
 
 			<!-- Cache Resultsets -->
+            <!--
 			<file>unit-tests/CacheResultsetTest.php</file>
 			<file>unit-tests/ModelsResultsetCacheStaticTest.php</file>
+			-->
 
 			<!-- View/Templating tests -->
 			<file>unit-tests/ViewTest.php</file>
