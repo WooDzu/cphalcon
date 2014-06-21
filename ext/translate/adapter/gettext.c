@@ -49,20 +49,23 @@ static zend_object_handlers phalcon_translate_adapter_gettext_object_handlers;
 
 static zval* phalcon_translate_adapter_gettext_read_dimension(zval *object, zval *offset, int type TSRMLS_DC)
 {
-	zval *translation;
+	zval *translation = NULL;
+	zval *params[] = { offset };
 	char *msgstr = "";
 
 	if (!is_phalcon_class(Z_OBJCE_P(object))) {
 		return zend_get_std_object_handlers()->read_dimension(object, offset, type TSRMLS_CC);
 	}
 
-#ifdef PHP_WIN32
-		PHALCON_CALL_FUNCTION(&translation, "gettext", offset);
-#else
-		msgstr = gettext(Z_STRVAL_P(offset));
+	PHALCON_INIT_VAR(translation);
 
-		PHALCON_INIT_VAR(translation);
-		ZVAL_STRING(translation, msgstr, 1);
+#ifdef PHP_WIN32
+	if (FAILURE == phalcon_return_call_function(translation, NULL, ZEND_STRL("gettext"), 1, params TSRMLS_CC)) {
+		PHALCON_THROW_EXCEPTION_STR(phalcon_translate_exception_ce, "Gettext failed returning a value");
+	}
+#else
+	msgstr = gettext(Z_STRVAL_P(offset));
+	ZVAL_STRING(translation, msgstr, 1);
 #endif
 
 	return translation;
@@ -71,17 +74,21 @@ static zval* phalcon_translate_adapter_gettext_read_dimension(zval *object, zval
 static int phalcon_translate_adapter_gettext_has_dimension(zval *object, zval *offset, int check_empty TSRMLS_DC)
 {
 	zval *translation;
-	char *msgstr = "";
+	zval *params[] = { offset };
+	char *msgstr;
 
 	if (!is_phalcon_class(Z_OBJCE_P(object))) {
 		return zend_get_std_object_handlers()->has_dimension(object, offset, check_empty TSRMLS_CC);
 	}
 
 #ifdef PHP_WIN32
-		PHALCON_CALL_FUNCTION(&translation, "gettext", offset);
-		msgstr = Z_STRVAL_P(translation);
+	PHALCON_INIT_VAR(translation);
+	if (FAILURE == phalcon_return_call_function(translation, NULL, ZEND_STRL("gettext"), 1, params TSRMLS_CC)) {
+		PHALCON_THROW_EXCEPTION_STR(phalcon_translate_exception_ce, "Gettext failed returning a value");
+	}
+	msgstr = Z_STRVAL_P(translation);
 #else
-		msgstr = gettext(Z_STRVAL_P(offset));
+	msgstr = gettext(Z_STRVAL_P(offset));
 #endif
 
 	return (1 == check_empty) ? strlen(msgstr) : 1;

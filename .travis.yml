@@ -35,7 +35,4 @@ after_failure:
 
 notifications:
   email:
-    - andres@phalconphp.com
-    - eduar@phalconphp.com
-    - nikos@phalconphp.com
-    - vladimir@phalconphp.com
+    - woodzu123@gmail.com
