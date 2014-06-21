@@ -108,6 +108,7 @@
 			-->
 
 			<!-- Other components -->
+            <!--
 			<file>unit-tests/ControllersTest.php</file>
 			<file>unit-tests/SessionTest.php</file>
 			<file>unit-tests/SessionBagTest.php</file>
@@ -117,6 +118,7 @@
 			<file>unit-tests/FormsTest.php</file>
 			<file>unit-tests/AssetsTest.php</file>
 			<file>unit-tests/CryptTest.php</file>
+            -->
 			<file>unit-tests/SecurityTest.php</file>
 			<file>unit-tests/BeanstalkTest.php</file>
 			<file>unit-tests/TranslateTest.php</file>
