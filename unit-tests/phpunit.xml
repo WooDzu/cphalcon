@@ -47,7 +47,6 @@
 			<!--<file>unit-tests/DbLoggerTest.php</file>-->
 
 			<!-- ORM tests / First Part -->
-
 			<file>unit-tests/ModelsMetadataTest.php</file>
 			<file>unit-tests/ModelsTest.php</file>
 			<file>unit-tests/ModelsCalculationsTest.php</file>
@@ -76,31 +75,22 @@
 
 
 			<!-- NoSQL tests -->
-            <!--
 			<file>unit-tests/CollectionsTest.php</file>
 			<file>unit-tests/CollectionsEventsTest.php</file>
 			<file>unit-tests/CollectionsSerializeTest.php</file>
-			-->
 
 			<!-- Cache Resultsets -->
-            <!--
 			<file>unit-tests/CacheResultsetTest.php</file>
 			<file>unit-tests/ModelsResultsetCacheStaticTest.php</file>
-			-->
 
 			<!-- View/Templating tests -->
-            <!--
 			<file>unit-tests/ViewTest.php</file>
-			-->
 			<!--<file>unit-tests/ViewEnginesTest.php</file>-->
-            <!--
 			<file>unit-tests/ViewEnginesVoltTest.php</file>
 			<file>unit-tests/ViewCacheTest.php</file>
 			<file>unit-tests/ViewSimpleTest.php</file>
-			-->
 
 			<!-- Other components -->
-            <!--
 			<file>unit-tests/ControllersTest.php</file>
 			<file>unit-tests/SessionTest.php</file>
 			<file>unit-tests/SessionBagTest.php</file>
@@ -113,34 +103,25 @@
 			<file>unit-tests/SecurityTest.php</file>
 			<file>unit-tests/BeanstalkTest.php</file>
 			<file>unit-tests/TranslateTest.php</file>
-			-->
 
 			<!-- Complex components/Integral tests -->
-            <!--
 			<file>unit-tests/ModelsResultsetCacheTest.php</file>
-			-->
 
 			<!-- Micro MVC -->
-            <!--
 			<file>unit-tests/MicroMvcTest.php</file>
 			<file>unit-tests/MicroMvcEventsTest.php</file>
 			<file>unit-tests/MicroMvcMiddlewareTest.php</file>
 			<file>unit-tests/MicroMvcCollectionsTest.php</file>
-			-->
 
 			<!-- CLI tests -->
-            <!--
 			<file>unit-tests/RouterCliTest.php</file>
 			<file>unit-tests/DispatcherCliTest.php</file>
 			<file>unit-tests/TasksCliTest.php</file>
 			<file>unit-tests/ConsoleCliTest.php</file>
-			-->
 
 			<!-- Image -->
-            <!--
 			<file>unit-tests/ImageTest.php</file>
 			<file>unit-tests/Issue1801.php</file>
-			-->
 
 		</testsuite>
         <!--
