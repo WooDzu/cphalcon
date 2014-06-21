@@ -20,7 +20,7 @@
 
 class SessionTest extends PHPUnit_Framework_TestCase
 {
-
+    /*
 	public function testSessionFiles()
 	{
 		$session = new Phalcon\Session\Adapter\Files();
@@ -42,8 +42,7 @@ class SessionTest extends PHPUnit_Framework_TestCase
 
 		@session_destroy();
 	}
-    /*
-
+*/
 	public function testSessionMemcache()
 	{
 		$session = new Phalcon\Session\Adapter\Memcache(array(
@@ -69,7 +68,7 @@ class SessionTest extends PHPUnit_Framework_TestCase
 
 		@session_destroy();
 	}
-
+/*
 	public function testSessionLibmemcached()
 	{
 		$session = new Phalcon\Session\Adapter\Libmemcached(array(
