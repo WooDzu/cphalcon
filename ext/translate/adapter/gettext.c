@@ -50,8 +50,11 @@ static zend_object_handlers phalcon_translate_adapter_gettext_object_handlers;
 static zval* phalcon_translate_adapter_gettext_read_dimension(zval *object, zval *offset, int type TSRMLS_DC)
 {
 	zval *translation = NULL;
+#ifdef PHP_WIN32
 	zval *params[] = { offset };
+#else
 	char *msgstr = "";
+#endif
 
 	if (!is_phalcon_class(Z_OBJCE_P(object))) {
 		return zend_get_std_object_handlers()->read_dimension(object, offset, type TSRMLS_CC);
@@ -73,8 +76,10 @@ static zval* phalcon_translate_adapter_gettext_read_dimension(zval *object, zval
 
 static int phalcon_translate_adapter_gettext_has_dimension(zval *object, zval *offset, int check_empty TSRMLS_DC)
 {
+#ifdef PHP_WIN32
 	zval *translation;
 	zval *params[] = { offset };
+#endif
 	char *msgstr;
 
 	if (!is_phalcon_class(Z_OBJCE_P(object))) {
