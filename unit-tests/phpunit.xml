@@ -115,9 +115,7 @@
 			<file>unit-tests/SessionTest.php</file>
 			-->
             <file>unit-tests/SessionTest.php</file>
-            <!--
-            <file>unit-tests/SessionBagTest.php</file>
-            -->
+            <file>unit-tests/SessionBagTest.php</file>W
             <!--
 			<file>unit-tests/PaginatorTest.php</file>
 			<file>unit-tests/LoaderTest.php</file>
