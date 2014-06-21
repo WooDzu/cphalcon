@@ -21,16 +21,16 @@ install:
  - composer --prefer-source install
 
 before_script:
+ - sudo apt-get -qq install gdb
  - git submodule --quiet update --init --recursive
  - (cd ext; export CFLAGS="-g3 -O1 -std=gnu90 -Wall -Werror -Wno-error=uninitialized"; phpize && ./configure --silent --enable-phalcon && make --silent -j4 > /dev/null && sudo make --silent install && phpenv config-add ../unit-tests/ci/phalcon.ini)
  - ulimit -c unlimited || true
 
 script:
- - ZEND_DONT_UNLOAD_MODULES=1 $(phpenv which php) ./unit-tests/ci/phpunit.php --debug -c unit-tests/phpunit.xml
- - ZEND_DONT_UNLOAD_MODULES=1 PHALCON_NO_RVO=1 $(phpenv which php) ./unit-tests/ci/phpunit.php --debug -c unit-tests/phpunit.xml
+ - ZEND_DONT_UNLOAD_MODULES=1 cat script.gdb | sudo gdb --args $(phpenv which php) ./unit-tests/ci/phpunit.php --debug -c unit-tests/phpunit.xml
+ - ZEND_DONT_UNLOAD_MODULES=1 PHALCON_NO_RVO=1 cat script.gdb | sudo gdb --args $(phpenv which php) ./unit-tests/ci/phpunit.php --debug -c unit-tests/phpunit.xml
 
 after_failure:
- - sudo apt-get -qq install gdb
  - ./unit-tests/ci/after_failure.sh
 
 notifications:
