@@ -49,22 +49,24 @@ static zend_object_handlers phalcon_translate_adapter_gettext_object_handlers;
 
 static zval* phalcon_translate_adapter_gettext_read_dimension(zval *object, zval *offset, int type TSRMLS_DC)
 {
-	zval *translation = NULL;
+	zval *translation;
 #ifdef PHP_WIN32
 	zval *params[] = { offset };
 #else
-	char *msgstr = "";
+	char *msgstr;
 #endif
 
 	if (!is_phalcon_class(Z_OBJCE_P(object))) {
 		return zend_get_std_object_handlers()->read_dimension(object, offset, type TSRMLS_CC);
 	}
 
+	PHALCON_MM_GROW();
 	PHALCON_INIT_VAR(translation);
 
 #ifdef PHP_WIN32
 	if (FAILURE == phalcon_return_call_function(translation, NULL, ZEND_STRL("gettext"), 1, params TSRMLS_CC)) {
 		PHALCON_THROW_EXCEPTION_STR(phalcon_translate_exception_ce, "Gettext failed returning a value");
+		return NULL;
 	}
 #else
 	msgstr = gettext(Z_STRVAL_P(offset));
@@ -87,11 +89,14 @@ static int phalcon_translate_adapter_gettext_has_dimension(zval *object, zval *o
 	}
 
 #ifdef PHP_WIN32
+	PHALCON_MM_GROW();
 	PHALCON_INIT_VAR(translation);
 	if (FAILURE == phalcon_return_call_function(translation, NULL, ZEND_STRL("gettext"), 1, params TSRMLS_CC)) {
 		PHALCON_THROW_EXCEPTION_STR(phalcon_translate_exception_ce, "Gettext failed returning a value");
+		return 0;
 	}
 	msgstr = Z_STRVAL_P(translation);
+	PHALCON_MM_RESTORE();
 #else
 	msgstr = gettext(Z_STRVAL_P(offset));
 #endif
