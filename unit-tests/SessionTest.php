@@ -42,6 +42,7 @@ class SessionTest extends PHPUnit_Framework_TestCase
 
 		@session_destroy();
 	}
+    /*
 
 	public function testSessionMemcache()
 	{
@@ -98,5 +99,6 @@ class SessionTest extends PHPUnit_Framework_TestCase
 
 		@session_destroy();
 	}
+    */
 
 }
