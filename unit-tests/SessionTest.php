@@ -42,7 +42,7 @@ class SessionTest extends PHPUnit_Framework_TestCase
 
 		@session_destroy();
 	}
-
+*/
 	public function testSessionMemcache()
 	{
 		$session = new Phalcon\Session\Adapter\Memcache(array(
@@ -54,7 +54,7 @@ class SessionTest extends PHPUnit_Framework_TestCase
 		$this->assertFalse($session->start());
 		$this->assertFalse($session->isStarted());
 
-		@session_start();
+		session_start();
 
 		$session->set('some', 'value');
 
@@ -66,9 +66,9 @@ class SessionTest extends PHPUnit_Framework_TestCase
 		$this->assertEquals($session->get('some', NULL, TRUE), 'value');
 		$this->assertFalse($session->has('some'));
 
-		@session_destroy();
+		session_destroy();
 	}
-*/
+
 	public function testSessionLibmemcached()
 	{
 		$session = new Phalcon\Session\Adapter\Libmemcached(array(
@@ -84,7 +84,7 @@ class SessionTest extends PHPUnit_Framework_TestCase
 		$this->assertFalse($session->start());
 		$this->assertFalse($session->isStarted());
 
-		@session_start();
+		session_start();
 
 		$session->set('some', 'value');
 
@@ -96,7 +96,7 @@ class SessionTest extends PHPUnit_Framework_TestCase
 		$this->assertEquals($session->get('some', NULL, TRUE), 'value');
 		$this->assertFalse($session->has('some'));
 
-		@session_destroy();
+		session_destroy();
 	}
 
 }
